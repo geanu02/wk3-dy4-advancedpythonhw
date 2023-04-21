@@ -4,6 +4,8 @@ class Cart:
     def __init__(self, products = {'defaultItem': 1}, cart = {}):
         self.products = products
         self.cart = cart
+        self.receipt = {}
+        self.drive()
     
     def show_products(self):
         print("Product Shelf:")
@@ -28,13 +30,22 @@ class Cart:
             if checkout == False:
                 print(f"Net Total: ${net_total}")
             else:
+                self.receipt['cart'] = self.cart
+                self.receipt['bill'] = {
+                    'net_total': net_total,
+                    'sales_tax': 0,
+                    'grand_total': net_total
+                }
                 if net_total > 110:
                     tax_pct = 0.08875
                     tax_amt = net_total * tax_pct
                     net_total += tax_amt
                     print(f"Net Total: ${net_total}")
                     print(f"Sales Tax ({tax_pct}%): ${tax_amt}")
+                    self.receipt['bill']['sales_tax'] = tax_amt
+                    self.receipt['bill']['grand_total'] = net_total
                 print(f"Grand Total: ${net_total}")
+
         else:
              print("You have nothing in your cart.")
         print("\n")
@@ -132,6 +143,7 @@ class Cart:
             elif initial_ans == 'quit' or initial_ans == 'q':     
                 if self.cart:
                     self.show_cart(checkout = True)
+                    return self.cart
                 shopping = False
 
             # Continue with while: if initial_ans is not a valid response.
@@ -145,5 +157,11 @@ fruit_products = {
     'orange': 0.65  
 }
     
-fruit_cart = Cart(fruit_products)
-fruit_cart.drive()
+# fruit_cart = Cart(fruit_products)
+# fruit_cart.drive()
+
+# gourmet_products = {'caviar': 135.00, 'foiegras': 65.00}
+# gourmet_cart_items = {'caviar': {'quantity': 2, 'unit_price': 135.0}, 'foiegras': {'quantity': 2, 'unit_price': 65.0}}
+# gourmet_cart = Cart(products=gourmet_products, cart=gourmet_cart_items)
+# print(gourmet_cart.receipt)
+
